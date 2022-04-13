@@ -1,9 +1,9 @@
 ﻿using Desafio.Domain.Entities;
 using System;
 
-namespace Desafio.Domain.Contracts.Repositories
+namespace Desafio.Domain.Contracts.Services
 {
-    public interface IUsuarioRepository
+    public interface IUsuarioDomainService
     {
         Usuario ObterPorId(Guid usuarioId);
     }

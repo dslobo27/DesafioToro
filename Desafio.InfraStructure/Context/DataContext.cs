@@ -21,6 +21,7 @@ namespace Desafio.InfraStructure.Context
             modelBuilder.ApplyConfiguration(new AtivoConfiguration());
             modelBuilder.ApplyConfiguration(new ContaCorrenteConfiguration());
             modelBuilder.ApplyConfiguration(new UsuarioConfiguration());
+            modelBuilder.ApplyConfiguration(new AtivoUsuarioConfiguration());
 
             modelBuilder.Entity<Ativo>().HasData(
                 new Ativo
@@ -59,10 +60,27 @@ namespace Desafio.InfraStructure.Context
                     Valor = 115.98M
                 }
              );
+
+            modelBuilder.Entity<ContaCorrente>().HasData(
+                new ContaCorrente
+                {
+                    Id = Guid.Parse("ca6331b4-52d4-4ee7-9970-7be33fa76628"),
+                    Saldo = 100
+                });
+
+            modelBuilder.Entity<Usuario>().HasData(
+                new Usuario
+                {
+                    Id = Guid.NewGuid(),
+                    ContaCorrenteId = Guid.Parse("ca6331b4-52d4-4ee7-9970-7be33fa76628"),
+                    Nome = "Cesar Tralli",
+                    CPF = "17811768097"
+                });
         }
 
         public DbSet<Ativo> Ativos { get; set; }
         public DbSet<ContaCorrente> ContasCorrentes { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<AtivoUsuario> AtivosUsuario { get; set; }
     }
 }

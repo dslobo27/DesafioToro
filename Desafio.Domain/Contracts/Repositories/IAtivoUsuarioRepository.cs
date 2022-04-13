@@ -3,8 +3,8 @@ using System;
 
 namespace Desafio.Domain.Contracts.Repositories
 {
-    public interface IUsuarioRepository
+    public interface IAtivoUsuarioRepository
     {
-        Usuario ObterPorId(Guid usuarioId);
+        void ComprarAtivo(AtivoUsuario ativoUsuario);
     }
 }
