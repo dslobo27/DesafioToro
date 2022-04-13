@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+  </head>
+  <body>
+    <div class="container vw-100">
+      <div class="row d-flex justify-content-center vh-100">
+        <div class="d-flex justify-content-center align-items-center">
+          <div class="card col-md-4">
+            <div class="card-body">
+              <div class="d-flex justify-content-center">
+                <img
+                  src="../../assets/img/user-avatar.png"
+                  class="img-circle avatar"
+                  alt="Usuário"
+                />
+              </div>
+              <form>
+                <div class="form-group mb-2">
+                  <label for="cpf">CPF</label>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="span-user"
+                      ><i class="fa fa-user"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="cpf"
+                      id="cpf"
+                      mask="000.000.000-99"
+                    />
+                  </div>
+                </div>
+                <div class="form-group mb-3">
+                  <label for="senha">Senha</label>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text"
+                      ><i class="fa fa-lock"></i
+                    ></span>
+                    <input
+                      type="password"
+                      class="form-control"
+                      name="senha"
+                      id="senha"
+                    />
+                  </div>
+                </div>
+                <div class="d-grid gap-2">
+                  <button type="submit" class="btn btn-primary">Entrar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
