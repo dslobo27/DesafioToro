@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Desafio.InfraStructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220405160246_Desafio")]
+    [Migration("20220413115034_Desafio")]
     partial class Desafio
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,10 +33,9 @@ namespace Desafio.InfraStructure.Migrations
                         .HasColumnType("varchar(10)");
 
                     b.Property<int>("QuantidadeNegociados")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("UsuarioId")
-                        .HasColumnType("uniqueidentifier");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<decimal>("Valor")
                         .ValueGeneratedOnAdd()
@@ -45,46 +44,70 @@ namespace Desafio.InfraStructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId");
-
                     b.ToTable("Ativos");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8e662be8-8664-4d54-b9ba-734d06c0d4b7"),
+                            Id = new Guid("f167a925-df66-443e-a3d7-40091a991b31"),
                             Codigo = "PETR4",
                             QuantidadeNegociados = 5,
                             Valor = 28.44m
                         },
                         new
                         {
-                            Id = new Guid("4c45c87c-dfdf-41e6-a580-051c392f0458"),
+                            Id = new Guid("7438311b-37ca-488e-bbf9-bb7af8a670ab"),
                             Codigo = "MGLU3",
                             QuantidadeNegociados = 4,
                             Valor = 25.91m
                         },
                         new
                         {
-                            Id = new Guid("4cd6fe4d-c817-413c-8c3a-6c87f4635757"),
+                            Id = new Guid("be6fa5e2-3a2d-4685-9586-253f1ef7e31f"),
                             Codigo = "VVAR3",
                             QuantidadeNegociados = 3,
                             Valor = 25.91m
                         },
                         new
                         {
-                            Id = new Guid("fd0bbe63-640e-4854-9389-7e8aa321832f"),
+                            Id = new Guid("ab5c2ecc-e451-4687-97d7-e5f5463b7d09"),
                             Codigo = "SANB11",
                             QuantidadeNegociados = 2,
                             Valor = 40.77m
                         },
                         new
                         {
-                            Id = new Guid("c4d73ebe-3c33-402e-ad67-233bb7d20051"),
+                            Id = new Guid("5c3ee54f-1b6a-4e49-a2b6-fbca14ae1794"),
                             Codigo = "TORO4",
                             QuantidadeNegociados = 1,
                             Valor = 115.98m
                         });
+                });
+
+            modelBuilder.Entity("Desafio.Domain.Entities.AtivoUsuario", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AtivoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantidade")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AtivoId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("AtivosUsuario");
                 });
 
             modelBuilder.Entity("Desafio.Domain.Entities.ContaCorrente", b =>
@@ -101,6 +124,13 @@ namespace Desafio.InfraStructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ContasCorrentes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("ca6331b4-52d4-4ee7-9970-7be33fa76628"),
+                            Saldo = 100m
+                        });
                 });
 
             modelBuilder.Entity("Desafio.Domain.Entities.Usuario", b =>
@@ -127,13 +157,34 @@ namespace Desafio.InfraStructure.Migrations
                     b.HasIndex("ContaCorrenteId");
 
                     b.ToTable("Usuarios");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("4d88d723-7565-4de8-adf8-7d5f43aff5e0"),
+                            CPF = "17811768097",
+                            ContaCorrenteId = new Guid("ca6331b4-52d4-4ee7-9970-7be33fa76628"),
+                            Nome = "Cesar Tralli"
+                        });
                 });
 
-            modelBuilder.Entity("Desafio.Domain.Entities.Ativo", b =>
+            modelBuilder.Entity("Desafio.Domain.Entities.AtivoUsuario", b =>
                 {
-                    b.HasOne("Desafio.Domain.Entities.Usuario", null)
-                        .WithMany("Ativos")
-                        .HasForeignKey("UsuarioId");
+                    b.HasOne("Desafio.Domain.Entities.Ativo", "Ativo")
+                        .WithMany()
+                        .HasForeignKey("AtivoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Desafio.Domain.Entities.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ativo");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Desafio.Domain.Entities.Usuario", b =>
@@ -145,11 +196,6 @@ namespace Desafio.InfraStructure.Migrations
                         .IsRequired();
 
                     b.Navigation("ContaCorrente");
-                });
-
-            modelBuilder.Entity("Desafio.Domain.Entities.Usuario", b =>
-                {
-                    b.Navigation("Ativos");
                 });
 #pragma warning restore 612, 618
         }

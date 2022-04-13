@@ -20,6 +20,10 @@ namespace Desafio.InfraStructure.Configurations
                 .HasDefaultValue(0)
                 .HasColumnType("decimal(18,2)")
                 .IsRequired();
+
+            builder.Property(map => map.QuantidadeNegociados)
+                .HasDefaultValue(0)
+                .IsRequired();
         }
     }
 }

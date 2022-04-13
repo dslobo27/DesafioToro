@@ -11,6 +11,5 @@ namespace Desafio.Domain.Entities
         public string CPF { get; set; }
 
         public ContaCorrente ContaCorrente { get; set; }
-        public List<Ativo> Ativos { get; set; }
     }
 }
