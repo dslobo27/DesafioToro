@@ -1,5 +1,4 @@
-﻿using Desafio.Application.Models.Usuarios;
-using System;
+﻿using System;
 
 namespace Desafio.Application.Models.Ativos
 {
