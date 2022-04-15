@@ -3,6 +3,7 @@ using Desafio.Application.Exceptions;
 using Desafio.Application.Models.Ativos;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 
 namespace Desafio.Presentation.Controllers
 {
@@ -21,11 +22,11 @@ namespace Desafio.Presentation.Controllers
 
         [HttpGet]
         [Route("trends")]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             try
             {
-                var ativos = _ativoApplicationService.ObterCincoAtivosMaisNegociados();
+                var ativos = await _ativoApplicationService.ObterCincoAtivosMaisNegociados();
 
                 if (ativos != null && ativos.Count > 0)
                     return Ok(ativos);
@@ -40,16 +41,18 @@ namespace Desafio.Presentation.Controllers
 
         [HttpPost]
         [Route("order")]
-        public IActionResult Post(ComprarAtivoModel model)
+        public async Task<IActionResult> Post(ComprarAtivoModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
 
             try
             {
-                _ativoApplicationService.ValidarAtivo(model.AtivoId);
-                _usuarioApplicationService.ValidarUsuario(model.UsuarioId);
-                _ativoApplicationService.ComprarAtivo(model);
+                var validarAtivo = _ativoApplicationService.ValidarAtivo(model.AtivoId);
+                var validarUsuario = _usuarioApplicationService.ValidarUsuario(model.UsuarioId);
+                var comprarAtivo = _ativoApplicationService.ComprarAtivo(model);
+
+                await Task.WhenAll(validarAtivo, validarUsuario, comprarAtivo);
 
                 return Ok();
             }
