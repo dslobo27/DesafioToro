@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Desafio.InfraStructure.Repositories
 {
@@ -22,14 +23,14 @@ namespace Desafio.InfraStructure.Repositories
             _context.Entry(ativo).State = EntityState.Modified;
         }
 
-        public List<Ativo> ObterCincoAtivosMaisNegociados()
+        public async Task<List<Ativo>> ObterCincoAtivosMaisNegociados()
         {
-            return _context.Ativos.OrderByDescending(x => x.QuantidadeNegociados).Take(5).ToList();
+            return await _context.Ativos.OrderByDescending(x => x.QuantidadeNegociados).Take(5).ToListAsync();
         }
 
-        public Ativo ObterPorId(Guid ativoId)
+        public async Task<Ativo> ObterPorId(Guid ativoId)
         {
-            return _context.Ativos.SingleOrDefault(x => x.Id.Equals(ativoId));
+            return await _context.Ativos.SingleOrDefaultAsync(x => x.Id.Equals(ativoId));
         }
     }
 }

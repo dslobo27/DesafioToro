@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Desafio.Application.Contracts
 {
     public interface IUsuarioApplicationService
     {
-        void ValidarUsuario(Guid usuarioId);
+        Task ValidarUsuario(Guid usuarioId);
     }
 }

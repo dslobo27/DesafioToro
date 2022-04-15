@@ -2,23 +2,22 @@
 using Desafio.Domain.Contracts.Services;
 using Desafio.Domain.Entities;
 using System;
+using System.Threading.Tasks;
 
 namespace Desafio.Domain.Services
 {
     public class ContaCorrenteDomainService : IContaCorrenteDomainService
     {
         private readonly IContaCorrenteRepository _repository;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public ContaCorrenteDomainService(IContaCorrenteRepository repository, IUnitOfWork unitOfWork)
+        public ContaCorrenteDomainService(IContaCorrenteRepository repository)
         {
             _repository = repository;
-            _unitOfWork = unitOfWork;
         }
 
-        public ContaCorrente ObterPorId(Guid contaCorrenteId)
+        public async Task<ContaCorrente> ObterPorId(Guid contaCorrenteId)
         {
-            return _repository.ObterPorId(contaCorrenteId);
+            return await _repository.ObterPorId(contaCorrenteId);
         }
     }
 }

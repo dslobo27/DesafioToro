@@ -2,6 +2,7 @@
 using Desafio.Domain.Contracts.Services;
 using Desafio.Domain.Entities;
 using System;
+using System.Threading.Tasks;
 
 namespace Desafio.Domain.Services
 {
@@ -14,26 +15,26 @@ namespace Desafio.Domain.Services
             _unitOfWork = unitOfWork;
         }
 
-        public void ComprarAtivo(AtivoUsuario ativoUsuario)
+        public async Task ComprarAtivo(AtivoUsuario ativoUsuario)
         {
             try
             {
                 _unitOfWork.BeginTransaction();
 
-                var usuario = _unitOfWork.UsuarioRepository.ObterPorId(ativoUsuario.UsuarioId);
+                var usuario = await _unitOfWork.UsuarioRepository.ObterPorId(ativoUsuario.UsuarioId);
 
                 var contaCorrente = usuario.ContaCorrente;
-                var ativo = _unitOfWork.AtivoRepository.ObterPorId(ativoUsuario.AtivoId);
+                var ativo = await _unitOfWork.AtivoRepository.ObterPorId(ativoUsuario.AtivoId);
 
                 var valorOperacao = ativo.Valor * ativoUsuario.Quantidade;
 
                 if (contaCorrente.Saldo < valorOperacao)
                     throw new Exception("Saldo Insuficiente.");
 
-                _unitOfWork.AtivoUsuarioRepository.ComprarAtivo(ativoUsuario);                
+                await _unitOfWork.AtivoUsuarioRepository.ComprarAtivo(ativoUsuario);
 
-                ativo.QuantidadeNegociados += ativoUsuario.Quantidade; 
-                
+                ativo.QuantidadeNegociados += ativoUsuario.Quantidade;
+
                 _unitOfWork.AtivoRepository.AtualizarVendas(ativo);
 
                 contaCorrente.Saldo -= valorOperacao;
@@ -47,7 +48,6 @@ namespace Desafio.Domain.Services
                 _unitOfWork.RollBack();
                 throw new Exception(ex.Message);
             }
-            
         }
     }
 }

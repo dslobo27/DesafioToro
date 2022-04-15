@@ -1,6 +1,7 @@
 ﻿using Desafio.Domain.Contracts.Repositories;
 using Desafio.Domain.Entities;
 using Desafio.InfraStructure.Context;
+using System.Threading.Tasks;
 
 namespace Desafio.InfraStructure.Repositories
 {
@@ -13,9 +14,9 @@ namespace Desafio.InfraStructure.Repositories
             _context = context;
         }
 
-        public void ComprarAtivo(AtivoUsuario ativoUsuario)
+        public async Task ComprarAtivo(AtivoUsuario ativoUsuario)
         {
-            _context.Add(ativoUsuario);
+            await _context.AddAsync(ativoUsuario);
         }
     }
 }

@@ -2,6 +2,7 @@
 using Desafio.Application.Exceptions;
 using Desafio.Domain.Contracts.Services;
 using System;
+using System.Threading.Tasks;
 
 namespace Desafio.Application.Services
 {
@@ -14,9 +15,9 @@ namespace Desafio.Application.Services
             _domainService = domainService;
         }
 
-        public void ValidarUsuario(Guid usuarioId)
+        public async Task ValidarUsuario(Guid usuarioId)
         {
-            var usuario = _domainService.ObterPorId(usuarioId);
+            var usuario = await _domainService.ObterPorId(usuarioId);
 
             if (usuario == null)
                 throw new UsuarioInvalidoException();

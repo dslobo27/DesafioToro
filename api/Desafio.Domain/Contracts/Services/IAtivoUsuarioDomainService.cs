@@ -1,9 +1,10 @@
 ﻿using Desafio.Domain.Entities;
+using System.Threading.Tasks;
 
 namespace Desafio.Domain.Contracts.Services
 {
     public interface IAtivoUsuarioDomainService
     {
-        void ComprarAtivo(AtivoUsuario ativoUsuario);
+        Task ComprarAtivo(AtivoUsuario ativoUsuario);
     }
 }

@@ -1,10 +1,11 @@
 ﻿using Desafio.Domain.Entities;
 using System;
+using System.Threading.Tasks;
 
 namespace Desafio.Domain.Contracts.Services
 {
     public interface IUsuarioDomainService
     {
-        Usuario ObterPorId(Guid usuarioId);
+        Task<Usuario> ObterPorId(Guid usuarioId);
     }
 }

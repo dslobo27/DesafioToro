@@ -1,8 +1,8 @@
-﻿using Desafio.Domain.Contracts;
-using Desafio.Domain.Contracts.Repositories;
+﻿using Desafio.Domain.Contracts.Repositories;
 using Desafio.Domain.Contracts.Services;
 using Desafio.Domain.Entities;
 using System;
+using System.Threading.Tasks;
 
 namespace Desafio.Domain.Services
 {
@@ -15,9 +15,9 @@ namespace Desafio.Domain.Services
             _repository = repository;
         }
 
-        public Usuario ObterPorId(Guid usuarioId)
+        public async Task<Usuario> ObterPorId(Guid usuarioId)
         {
-            return _repository.ObterPorId(usuarioId);
+            return await _repository.ObterPorId(usuarioId);
         }
     }
 }

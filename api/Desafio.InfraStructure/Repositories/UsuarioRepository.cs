@@ -3,7 +3,7 @@ using Desafio.Domain.Entities;
 using Desafio.InfraStructure.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace Desafio.InfraStructure.Repositories
 {
@@ -16,10 +16,10 @@ namespace Desafio.InfraStructure.Repositories
             _context = context;
         }
 
-        public Usuario ObterPorId(Guid usuarioId)
+        public async Task<Usuario> ObterPorId(Guid usuarioId)
         {
-            return _context.Usuarios.Include(x => x.ContaCorrente)
-                .SingleOrDefault(x => x.Id.Equals(usuarioId));
+            return await _context.Usuarios.Include(x => x.ContaCorrente)
+                .SingleOrDefaultAsync(x => x.Id.Equals(usuarioId));
         }
     }
 }

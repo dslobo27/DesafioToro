@@ -3,6 +3,7 @@ using Desafio.Application.Contracts;
 using Desafio.Application.Models.AtivosUsuario;
 using Desafio.Domain.Contracts.Services;
 using Desafio.Domain.Entities;
+using System.Threading.Tasks;
 
 namespace Desafio.Application.Services
 {
@@ -17,9 +18,9 @@ namespace Desafio.Application.Services
             _mapper = mapper;
         }
 
-        public void ComprarAtivo(AtivoUsuarioModel ativoUsuarioModel)
+        public async Task ComprarAtivo(AtivoUsuarioModel ativoUsuarioModel)
         {
-            _domainService.ComprarAtivo(_mapper.Map<AtivoUsuario>(ativoUsuarioModel));
+            await _domainService.ComprarAtivo(_mapper.Map<AtivoUsuario>(ativoUsuarioModel));
         }
     }
 }

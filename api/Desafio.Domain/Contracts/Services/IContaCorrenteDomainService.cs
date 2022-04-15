@@ -1,10 +1,11 @@
 ﻿using Desafio.Domain.Entities;
 using System;
+using System.Threading.Tasks;
 
 namespace Desafio.Domain.Contracts.Services
 {
     public interface IContaCorrenteDomainService
     {
-        ContaCorrente ObterPorId(Guid contaCorrenteId);
+        Task<ContaCorrente> ObterPorId(Guid contaCorrenteId);
     }
 }
