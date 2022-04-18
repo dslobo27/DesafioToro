@@ -23,6 +23,11 @@ namespace Desafio.InfraStructure.Configurations
                 .HasColumnType("varchar")
                 .HasMaxLength(11)
                 .IsRequired();
+
+            builder.Property(map => map.Senha)
+                .HasColumnType("varchar")
+                .HasMaxLength(255)
+                .IsRequired();
         }
     }
 }

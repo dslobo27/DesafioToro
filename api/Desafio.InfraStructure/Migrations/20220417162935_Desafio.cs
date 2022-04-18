@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Desafio.InfraStructure.Migrations
 {
@@ -40,7 +40,8 @@ namespace Desafio.InfraStructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ContaCorrenteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nome = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
-                    CPF = table.Column<string>(type: "varchar(11)", maxLength: 11, nullable: false)
+                    CPF = table.Column<string>(type: "varchar(11)", maxLength: 11, nullable: false),
+                    Senha = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -84,11 +85,11 @@ namespace Desafio.InfraStructure.Migrations
                 columns: new[] { "Id", "Codigo", "QuantidadeNegociados", "Valor" },
                 values: new object[,]
                 {
-                    { new Guid("f167a925-df66-443e-a3d7-40091a991b31"), "PETR4", 5, 28.44m },
-                    { new Guid("7438311b-37ca-488e-bbf9-bb7af8a670ab"), "MGLU3", 4, 25.91m },
-                    { new Guid("be6fa5e2-3a2d-4685-9586-253f1ef7e31f"), "VVAR3", 3, 25.91m },
-                    { new Guid("ab5c2ecc-e451-4687-97d7-e5f5463b7d09"), "SANB11", 2, 40.77m },
-                    { new Guid("5c3ee54f-1b6a-4e49-a2b6-fbca14ae1794"), "TORO4", 1, 115.98m }
+                    { new Guid("488cfa78-2506-4f1a-99bb-7fc2c5749225"), "PETR4", 5, 28.44m },
+                    { new Guid("1e2d11b0-a3f6-4e55-a94d-c918abbf0c8b"), "MGLU3", 4, 25.91m },
+                    { new Guid("f039ac06-a8be-4572-9bb2-c9878a14df1c"), "VVAR3", 3, 25.91m },
+                    { new Guid("eeeca5a2-5947-4def-8e10-fce4e7e8335b"), "SANB11", 2, 40.77m },
+                    { new Guid("88abab1a-6e03-4f95-b274-7f1aa18fae93"), "TORO4", 1, 115.98m }
                 });
 
             migrationBuilder.InsertData(
@@ -98,8 +99,8 @@ namespace Desafio.InfraStructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Usuarios",
-                columns: new[] { "Id", "CPF", "ContaCorrenteId", "Nome" },
-                values: new object[] { new Guid("4d88d723-7565-4de8-adf8-7d5f43aff5e0"), "17811768097", new Guid("ca6331b4-52d4-4ee7-9970-7be33fa76628"), "Cesar Tralli" });
+                columns: new[] { "Id", "CPF", "ContaCorrenteId", "Nome", "Senha" },
+                values: new object[] { new Guid("19caa746-6d78-4bcd-a2a2-227750bcb236"), "17811768097", new Guid("ca6331b4-52d4-4ee7-9970-7be33fa76628"), "Cesar Tralli", "123" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AtivosUsuario_AtivoId",

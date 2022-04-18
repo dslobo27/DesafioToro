@@ -74,7 +74,8 @@ namespace Desafio.InfraStructure.Context
                     Id = Guid.NewGuid(),
                     ContaCorrenteId = Guid.Parse("ca6331b4-52d4-4ee7-9970-7be33fa76628"),
                     Nome = "Cesar Tralli",
-                    CPF = "17811768097"
+                    CPF = "17811768097",
+                    Senha = "123"
                 });
         }
 

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Desafio.InfraStructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220413115034_Desafio")]
+    [Migration("20220417162935_Desafio")]
     partial class Desafio
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,35 +49,35 @@ namespace Desafio.InfraStructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f167a925-df66-443e-a3d7-40091a991b31"),
+                            Id = new Guid("488cfa78-2506-4f1a-99bb-7fc2c5749225"),
                             Codigo = "PETR4",
                             QuantidadeNegociados = 5,
                             Valor = 28.44m
                         },
                         new
                         {
-                            Id = new Guid("7438311b-37ca-488e-bbf9-bb7af8a670ab"),
+                            Id = new Guid("1e2d11b0-a3f6-4e55-a94d-c918abbf0c8b"),
                             Codigo = "MGLU3",
                             QuantidadeNegociados = 4,
                             Valor = 25.91m
                         },
                         new
                         {
-                            Id = new Guid("be6fa5e2-3a2d-4685-9586-253f1ef7e31f"),
+                            Id = new Guid("f039ac06-a8be-4572-9bb2-c9878a14df1c"),
                             Codigo = "VVAR3",
                             QuantidadeNegociados = 3,
                             Valor = 25.91m
                         },
                         new
                         {
-                            Id = new Guid("ab5c2ecc-e451-4687-97d7-e5f5463b7d09"),
+                            Id = new Guid("eeeca5a2-5947-4def-8e10-fce4e7e8335b"),
                             Codigo = "SANB11",
                             QuantidadeNegociados = 2,
                             Valor = 40.77m
                         },
                         new
                         {
-                            Id = new Guid("5c3ee54f-1b6a-4e49-a2b6-fbca14ae1794"),
+                            Id = new Guid("88abab1a-6e03-4f95-b274-7f1aa18fae93"),
                             Codigo = "TORO4",
                             QuantidadeNegociados = 1,
                             Valor = 115.98m
@@ -152,6 +152,11 @@ namespace Desafio.InfraStructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
+                    b.Property<string>("Senha")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ContaCorrenteId");
@@ -161,23 +166,24 @@ namespace Desafio.InfraStructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4d88d723-7565-4de8-adf8-7d5f43aff5e0"),
+                            Id = new Guid("19caa746-6d78-4bcd-a2a2-227750bcb236"),
                             CPF = "17811768097",
                             ContaCorrenteId = new Guid("ca6331b4-52d4-4ee7-9970-7be33fa76628"),
-                            Nome = "Cesar Tralli"
+                            Nome = "Cesar Tralli",
+                            Senha = "123"
                         });
                 });
 
             modelBuilder.Entity("Desafio.Domain.Entities.AtivoUsuario", b =>
                 {
                     b.HasOne("Desafio.Domain.Entities.Ativo", "Ativo")
-                        .WithMany()
+                        .WithMany("AtivosUsuario")
                         .HasForeignKey("AtivoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Desafio.Domain.Entities.Usuario", "Usuario")
-                        .WithMany()
+                        .WithMany("AtivosUsuario")
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -196,6 +202,16 @@ namespace Desafio.InfraStructure.Migrations
                         .IsRequired();
 
                     b.Navigation("ContaCorrente");
+                });
+
+            modelBuilder.Entity("Desafio.Domain.Entities.Ativo", b =>
+                {
+                    b.Navigation("AtivosUsuario");
+                });
+
+            modelBuilder.Entity("Desafio.Domain.Entities.Usuario", b =>
+                {
+                    b.Navigation("AtivosUsuario");
                 });
 #pragma warning restore 612, 618
         }
