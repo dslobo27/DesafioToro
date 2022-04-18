@@ -79,7 +79,7 @@
                       <th scope="col">Quantidade</th>
                     </tr>
                   </thead>
-                  <tbody *ngFor="let ativo of ativos">
+                  <tbody *ngFor="let ativo of ativos | async">
                     <tr class="rowB2">
                       <td class="col-6">{{ ativo.codigo }}</td>
                       <td class="col-4">{{ ativo.valor }}</td>
@@ -109,7 +109,7 @@
                     <th scope="col"></th>
                   </tr>
                 </thead>
-                <tbody *ngFor="let ativo of ativos">
+                <tbody *ngFor="let ativo of ativos | async">
                   <tr class="rowB2">
                     <td class="col-6">{{ ativo.codigo }}</td>
                     <td class="col-4">{{ ativo.valor }}</td>
@@ -118,6 +118,7 @@
                         class="btn btn-primary"
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal"
+                        data-id="{{ ativo.id }}"
                       >
                         <span class="fa fa-shopping-cart"></span>&nbsp;Comprar
                       </button>
