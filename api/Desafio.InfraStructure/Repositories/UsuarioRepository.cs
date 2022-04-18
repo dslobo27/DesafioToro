@@ -16,9 +16,21 @@ namespace Desafio.InfraStructure.Repositories
             _context = context;
         }
 
+        public async Task<Usuario> Login(string cpf, string senha)
+        {
+            return await _context.Usuarios
+                .Include(x => x.ContaCorrente)
+                .Include(x => x.AtivosUsuario)
+                    .ThenInclude(x => x.Ativo)
+                .SingleOrDefaultAsync(x => x.CPF.Equals(cpf) && x.Senha.Equals(senha));
+        }
+
         public async Task<Usuario> ObterPorId(Guid usuarioId)
         {
-            return await _context.Usuarios.Include(x => x.ContaCorrente)
+            return await _context.Usuarios
+                .Include(x => x.ContaCorrente)
+                .Include(x => x.AtivosUsuario)
+                    .ThenInclude(x => x.Ativo)
                 .SingleOrDefaultAsync(x => x.Id.Equals(usuarioId));
         }
     }

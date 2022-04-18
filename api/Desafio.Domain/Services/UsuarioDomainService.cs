@@ -15,6 +15,11 @@ namespace Desafio.Domain.Services
             _repository = repository;
         }
 
+        public async Task<Usuario> Login(string cpf, string senha)
+        {
+            return await _repository.Login(cpf, senha);
+        }
+
         public async Task<Usuario> ObterPorId(Guid usuarioId)
         {
             return await _repository.ObterPorId(usuarioId);

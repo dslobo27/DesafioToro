@@ -7,5 +7,6 @@ namespace Desafio.Domain.Contracts.Repositories
     public interface IUsuarioRepository
     {
         Task<Usuario> ObterPorId(Guid usuarioId);
+        Task<Usuario> Login(string cpf, string senha);
     }
 }

@@ -7,5 +7,7 @@ namespace Desafio.Domain.Contracts.Services
     public interface IUsuarioDomainService
     {
         Task<Usuario> ObterPorId(Guid usuarioId);
+
+        Task<Usuario> Login(string cpf, string senha);
     }
 }
