@@ -17,7 +17,6 @@ namespace Desafio.Application.IoC
             services.AddTransient<IAtivoDomainService, AtivoDomainService>();
             services.AddTransient<IAtivoRepository, AtivoRepository>();
 
-            //services.AddTransient<IContaCorrenteApplicationService, ContaCorrenteApplicationService>();
             services.AddTransient<IContaCorrenteDomainService, ContaCorrenteDomainService>();
             services.AddTransient<IContaCorrenteRepository, ContaCorrenteRepository>();
 
@@ -28,6 +27,7 @@ namespace Desafio.Application.IoC
             services.AddTransient<IAtivoUsuarioApplicationService, AtivoUsuarioApplicationService>();
             services.AddTransient<IAtivoUsuarioDomainService, AtivoUsuarioDomainService>();
             services.AddTransient<IAtivoUsuarioRepository, AtivoUsuarioRepository>();
+
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
     }
