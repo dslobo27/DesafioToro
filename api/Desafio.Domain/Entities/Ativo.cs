@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Desafio.Domain.Entities
 {
@@ -8,5 +9,7 @@ namespace Desafio.Domain.Entities
         public string Codigo { get; set; }
         public decimal Valor { get; set; }
         public int QuantidadeNegociados { get; set; }
+
+        public List<AtivoUsuario> AtivosUsuario { get; set; }
     }
 }
