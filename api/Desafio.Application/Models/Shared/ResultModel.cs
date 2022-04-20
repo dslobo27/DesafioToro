@@ -26,6 +26,6 @@ namespace Desafio.Application.Models.Shared
         }
 
         public T Data { get; set; }
-        public List<string> Errors { get; private set; }
+        public List<string> Errors { get; private set; } = new List<string>();
     }
 }
