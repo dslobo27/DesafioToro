@@ -19,19 +19,18 @@ namespace Desafio.Domain.Services
         {
             try
             {
-                _unitOfWork.BeginTransaction();
+                await _unitOfWork.BeginTransaction();
 
-                var usuario = await _unitOfWork.UsuarioRepository.ObterPorId(ativoUsuario.UsuarioId);
-
+                var usuario = ativoUsuario.Usuario;
                 var contaCorrente = usuario.ContaCorrente;
-                var ativo = await _unitOfWork.AtivoRepository.ObterPorId(ativoUsuario.AtivoId);
+                var ativo = ativoUsuario.Ativo;
 
                 var valorOperacao = ativo.Valor * ativoUsuario.Quantidade;
 
                 if (contaCorrente.Saldo < valorOperacao)
                     throw new Exception("Saldo Insuficiente.");
 
-                await _unitOfWork.AtivoUsuarioRepository.ComprarAtivo(ativoUsuario);
+                _unitOfWork.AtivoUsuarioRepository.ComprarAtivo(ativoUsuario);
 
                 ativo.QuantidadeNegociados += ativoUsuario.Quantidade;
 
@@ -41,11 +40,11 @@ namespace Desafio.Domain.Services
 
                 _unitOfWork.ContaCorrenteRepository.AtualizarSaldo(contaCorrente);
 
-                _unitOfWork.Commit();
+                await _unitOfWork.Commit();
             }
             catch (Exception ex)
             {
-                _unitOfWork.RollBack();
+                await _unitOfWork.RollBack();
                 throw new Exception(ex.Message);
             }
         }
