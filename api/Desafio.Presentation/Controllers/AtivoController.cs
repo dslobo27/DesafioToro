@@ -1,5 +1,6 @@
 ﻿using Desafio.Application.Contracts;
 using Desafio.Application.Exceptions;
+using Desafio.Application.Extensions;
 using Desafio.Application.Models.Ativos;
 using Desafio.Application.Models.Shared;
 using Microsoft.AspNetCore.Authorization;
@@ -44,7 +45,7 @@ namespace Desafio.Presentation.Controllers
         public async Task<IActionResult> PostAsync([FromBody]ComprarAtivoModel model)
         {
             if(!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest(new ResultModel<string>(ModelState.GetErrors()));
 
             try
             {
@@ -54,7 +55,7 @@ namespace Desafio.Presentation.Controllers
 
                 await Task.WhenAll(validarAtivo, validarUsuario, comprarAtivo);
 
-                return Ok(new ResultModel<string>("Compra de ativo realizada com sucesso!"));
+                return Ok(new ResultModel<string>("Compra de ativo realizada com sucesso!", null));
             }
             catch (UsuarioInvalidoException ex)
             {
