@@ -31,7 +31,7 @@ namespace Desafio.Presentation
         {
             DependencyResolver.Register(services, Configuration);
 
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionString")));
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionString")), ServiceLifetime.Transient);
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(EntityToModelMap)));
 
@@ -41,6 +41,11 @@ namespace Desafio.Presentation
             });
             
             services.AddControllers();
+            services.AddCors(options => {
+                options.AddPolicy("ApiPolicy", 
+                    builder => builder.AllowAnyOrigin().AllowAnyHeader());
+            });
+
 
             services.AddTransient<TokenService>();
 
@@ -78,6 +83,7 @@ namespace Desafio.Presentation
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCors("ApiPolicy");
 
             app.UseEndpoints(endpoints =>
             {
