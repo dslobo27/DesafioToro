@@ -1,6 +1,7 @@
 ﻿using Desafio.Domain.Contracts.Repositories;
 using Desafio.InfraStructure.Context;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.Threading.Tasks;
 
 namespace Desafio.InfraStructure.Repositories
 {
@@ -14,20 +15,20 @@ namespace Desafio.InfraStructure.Repositories
             _context = context;
         }
 
-        public void BeginTransaction()
+        public async Task BeginTransaction()
         {
-            transaction = _context.Database.BeginTransaction();
+            transaction = await _context.Database.BeginTransactionAsync();
         }
 
-        public void Commit()
+        public async Task Commit()
         {
-            _context.SaveChanges();
-            transaction.Commit();
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
         }
 
-        public void RollBack()
+        public async Task RollBack()
         {
-            transaction.Rollback();
+            await transaction.RollbackAsync();
         }
 
         public IAtivoRepository AtivoRepository => new AtivoRepository(_context);

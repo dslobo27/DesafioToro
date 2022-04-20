@@ -18,7 +18,7 @@ namespace Desafio.InfraStructure.Repositories
 
         public async Task<Usuario> Login(string cpf, string senha)
         {
-            return await _context.Usuarios
+            return await _context.Usuarios.AsNoTracking()
                 .Include(x => x.ContaCorrente)
                 .Include(x => x.AtivosUsuario)
                     .ThenInclude(x => x.Ativo)
@@ -27,7 +27,7 @@ namespace Desafio.InfraStructure.Repositories
 
         public async Task<Usuario> ObterPorId(Guid usuarioId)
         {
-            return await _context.Usuarios
+            return await _context.Usuarios.AsNoTracking()
                 .Include(x => x.ContaCorrente)
                 .Include(x => x.AtivosUsuario)
                     .ThenInclude(x => x.Ativo)

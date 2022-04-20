@@ -18,12 +18,12 @@ namespace Desafio.InfraStructure.Repositories
 
         public void AtualizarSaldo(ContaCorrente contaCorrente)
         {
-            _context.Entry(contaCorrente).State = EntityState.Modified;
+            _context.Update(contaCorrente);
         }
 
         public async Task<ContaCorrente> ObterPorId(Guid contaCorrenteId)
         {
-            return await _context.ContasCorrentes.SingleOrDefaultAsync(x => x.Id.Equals(contaCorrenteId));
+            return await _context.ContasCorrentes.AsNoTracking().SingleOrDefaultAsync(x => x.Id.Equals(contaCorrenteId));
         }
     }
 }

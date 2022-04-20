@@ -1,12 +1,14 @@
-﻿namespace Desafio.Domain.Contracts.Repositories
+﻿using System.Threading.Tasks;
+
+namespace Desafio.Domain.Contracts.Repositories
 {
     public interface IUnitOfWork
     {
-        void BeginTransaction();
+        Task BeginTransaction();
 
-        void Commit();
+        Task Commit();
 
-        void RollBack();
+        Task RollBack();
 
         IAtivoRepository AtivoRepository { get; }
         IAtivoUsuarioRepository AtivoUsuarioRepository { get; }
