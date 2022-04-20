@@ -27,9 +27,9 @@ namespace Desafio.Application.Services
         }
 
         public async Task ComprarAtivo(ComprarAtivoModel model)
-        {
-            var usuario = _mapper.Map<Usuario>(_usuarioDomainService.ObterPorId(model.UsuarioId));
-            var ativo = _mapper.Map<Ativo>(_domainService.ObterPorId(model.AtivoId));
+        {            
+            var usuario = await _usuarioDomainService.ObterPorId(model.UsuarioId);           
+            var ativo = await _domainService.ObterPorId(model.AtivoId);           
 
             var ativoUsuario = new AtivoUsuario
             {
@@ -40,7 +40,7 @@ namespace Desafio.Application.Services
                 Quantidade = model.QuantidadeSolicitada
             };
 
-            await _ativoUsuarioDomainService.ComprarAtivo(ativoUsuario);
+            await _ativoUsuarioDomainService.ComprarAtivo(ativoUsuario);           
         }
 
         public async Task<List<AtivoModel>> ObterCincoAtivosMaisNegociados()
