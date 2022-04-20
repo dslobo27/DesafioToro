@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from 'src/app/pages/home/home.component';
 import { LoginComponent } from "src/app/pages/login/login.component";
+import { AuthService } from "./services/auth.service";
 
 const routes: Routes = [
     {
@@ -10,6 +11,7 @@ const routes: Routes = [
     },
     {
       path: 'home',
+      canActivate: [AuthService],
       component: HomeComponent
     }
   ];
