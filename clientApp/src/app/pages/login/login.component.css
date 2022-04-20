@@ -1,3 +1,8 @@
 #span-user {
     max-width: 36.3px;
 }
+.has-danger {
+    border: 1px solid red;
+    border-radius: 5px;
+}
+
