@@ -4,6 +4,7 @@
     <title>Home</title>
   </head>
   <body>
+    <app-loading></app-loading>
     <header>
       <nav class="navbar navbar-expand-sm navbar-primary bg-primary">
         <div class="container-fluid">
@@ -22,14 +23,16 @@
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
                 <a
-                  class="nav-link disabled text-white"
+                  class="nav-link text-white"
                   href="#"
                   tabindex="-1"
                   aria-disabled="true"
+                  (click)="logout()"
                 >
                   <span class="fa fa-user text-white"></span>
-                  Bem vindo, {{ nome }}</a
-                >
+                  Bem vindo, {{ usuario.nome }}
+                  <span class="fa fa-sign-out text-white"></span>
+                </a>
               </li>
             </ul>
             <ul class="navbar-nav ms-auto">
@@ -41,8 +44,9 @@
                   aria-disabled="true"
                 >
                   <span class="fa fa-dollar text-white"></span>
-                  Saldo disponível: {{ saldo }}</a
-                >
+                  Saldo disponível:
+                  {{ usuario.ContaCorrente.saldo | currency: "BRL" }}
+                </a>
               </li>
             </ul>
           </div>
@@ -71,7 +75,7 @@
               aria-labelledby="panelsStayOpen-headingOne"
             >
               <div class="accordion-body">
-                <table class="table table-bordered table-hover">
+                <table class="table table-bordered table-hover" *ngIf="usuario.AtivosUsuario.length > 0">
                   <thead>
                     <tr>
                       <th scope="col">Ativo</th>
@@ -79,14 +83,23 @@
                       <th scope="col">Quantidade</th>
                     </tr>
                   </thead>
-                  <tbody *ngFor="let ativo of ativos | async">
+                  <tbody *ngFor="let ativoUsuario of usuario.AtivosUsuario">
                     <tr class="rowB2">
-                      <td class="col-6">{{ ativo.codigo }}</td>
-                      <td class="col-4">{{ ativo.valor }}</td>
-                      <td class="col-2">{{ ativo.quantidadeNegociados }}</td>
+                      <td class="col-6">
+                        {{ ativoUsuario.ativoModel.codigo }}
+                      </td>
+                      <td class="col-4">
+                        {{ ativoUsuario.ativoModel.valor | currency: "BRL" }}
+                      </td>
+                      <td class="col-2">
+                        {{ ativoUsuario.ativoModel.quantidadeNegociados }}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
+                <div *ngIf="usuario.AtivosUsuario.length == 0">
+                  <p class="text-center">Usuário não possui ativos.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -104,21 +117,21 @@
               <table class="table table-bordered table-hover">
                 <thead>
                   <tr>
-                    <th scope="col">Ativo</th>
-                    <th scope="col">Valor</th>
-                    <th scope="col"></th>
+                    <th scope="col-6">Ativo</th>
+                    <th scope="col-4">Valor</th>
+                    <th scope="col-2"></th>
                   </tr>
                 </thead>
-                <tbody *ngFor="let ativo of ativos | async">
+                <tbody *ngFor="let ativo of ativos">
                   <tr class="rowB2">
                     <td class="col-6">{{ ativo.codigo }}</td>
-                    <td class="col-4">{{ ativo.valor }}</td>
+                    <td class="col-4">{{ ativo.valor | currency: "BRL" }}</td>
                     <td class="col-2 text-center">
                       <button
                         class="btn btn-primary"
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal"
-                        data-id="{{ ativo.id }}"
+                        (click)="showModal(ativo.id, ativo.codigo, ativo.valor)"
                       >
                         <span class="fa fa-shopping-cart"></span>&nbsp;Comprar
                       </button>
@@ -137,6 +150,7 @@
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
+      data-backdrop="false"
     >
       <div class="modal-dialog">
         <div class="modal-content">
@@ -150,19 +164,20 @@
             ></button>
           </div>
           <div class="modal-body">
-            <form>
+            <form [formGroup]="form">
               <div class="form-group mb-2">
-                <label for="ativo">Ativo: PETR4</label> |
-                <label for="valor">Valor: 28,44</label>
+                <label for="ativo">Ativo: {{ codigoAtivoSelecionado }}</label> |
+                <label for="valor">Valor: {{ valorAtivoSelecionado }}</label>
               </div>
               <div class="form-group mb-3">
                 <label for="quantidadeNegociados">Quantidade</label>
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control shadow-none"
                   name="quantidadeNegociados"
                   id="quantidadeNegociados"
                   mask="000.000.000.000.000,00"
+                  formControlName="quantidade"
                 />
               </div>
             </form>
@@ -175,7 +190,12 @@
             >
               Cancelar
             </button>
-            <button type="button" class="btn btn-primary">
+            <button
+              type="button"
+              class="btn btn-primary shadow-none"
+              [disabled]="form.invalid"
+              (click)="finalizarCompra()"
+            >
               <span class="fa fa-shopping-cart"></span>&nbsp;Finalizar compra
             </button>
           </div>
