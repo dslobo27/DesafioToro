@@ -45,11 +45,15 @@ export class LoginComponent implements OnInit {
         }),
         catchError((response) => {
           let errors = response.error.errors;
-          let message = '';
-          errors.forEach((el: any) => {
-            message += `${el}\n`;
-          });
-          this.toastr.error(message);
+          if (errors != null) {
+            let message = '';
+            errors?.forEach((el: any) => {
+              message += `${el}\n`;
+            });
+            this.toastr.error(message);
+          } else{
+            this.toastr.error(response.message);
+          }
           return '';
         })
       )

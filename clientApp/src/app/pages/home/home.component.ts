@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { Usuario } from 'src/app/models/Usuario.model';
 import { AtivosService } from 'src/app/services/ativos.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { Ativo } from 'src/app/models/Ativo.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ComprarAtivo } from 'src/app/models/ComprarAtivo.model';
 import { Result } from 'src/app/models/Result.model';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,9 @@ import { Result } from 'src/app/models/Result.model';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
+  @ViewChild('btnCancelar', { static: false }) btnCancelar: ElementRef =
+    {} as ElementRef;
+
   public ativos: Array<any> = new Array<any>();
   public usuario: Usuario = new Usuario();
   public form: FormGroup = new FormGroup({});
@@ -25,6 +29,8 @@ export class HomeComponent implements OnInit {
   public ativoSelecionadoId: string = '';
   public codigoAtivoSelecionado: string = '';
   public valorAtivoSelecionado: string = '';
+
+  private deveAtualizar: Subject<void> = new Subject<void>();
 
   constructor(
     private ativosService: AtivosService,
@@ -45,6 +51,16 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.deveAtualizar.subscribe(() => {
+      this.obterCincoAtivosMaisVendidos();
+      this.obterUsuarioLogado();
+    });
+
+    this.obterCincoAtivosMaisVendidos();
+    this.obterUsuarioLogado();
+  }
+
+  private obterCincoAtivosMaisVendidos(): void {
     this.ativosService
       .obterCincoAtivosMaisVendidos()
       .pipe(
@@ -60,10 +76,15 @@ export class HomeComponent implements OnInit {
             ativos.push(ativo);
           });
           return ativos;
-        })
+        }),
+        catchError(this.catchError.bind(this))
       )
-      .subscribe((x) => (this.ativos = x));
+      .subscribe((x: any) => {
+        this.ativos = x
+      });
+  }
 
+  private obterUsuarioLogado(): void {
     this.usuarioLogadoId = sessionStorage.getItem('user')?.toString();
     this.usuariosService
       .obterPorId(this.usuarioLogadoId)
@@ -76,9 +97,12 @@ export class HomeComponent implements OnInit {
           usuario.AtivosUsuario = usr.ativosUsuario;
           usuario.ContaCorrente = usr.contaCorrente;
           return usuario;
-        })
+        }),
+        catchError(this.catchError.bind(this))
       )
-      .subscribe((x) => (this.usuario = x));
+      .subscribe((x: any) => { 
+        this.usuario = x;
+      });
   }
 
   logout(): void {
@@ -100,23 +124,34 @@ export class HomeComponent implements OnInit {
     this.ativosService
       .finalizarCompra(model)
       .pipe(
+        tap(() => {
+          this.deveAtualizar.next();
+        }),
         map((r) => {
           let result = new Result();
           result.data = r.data;
           return result.data;
         }),
-        catchError((response) => {
-          let errors = response.error.errors;
-          let message = '';
-          errors.forEach((el: any) => {
-            message += `${el}\n`;
-          });
-          this.toastr.error(message);
-          return '';
-        })
+        catchError(this.catchError.bind(this))
       )
       .subscribe((x) => {
+        this.btnCancelar.nativeElement.click();
+        this.form.reset();
         this.toastr.success(x);
       });
+  }
+
+  catchError(response: any) {
+    let errors = response.error.errors;
+    if (errors != null) {
+      let message = '';
+      errors?.forEach((el: any) => {
+        message += `${el}\n`;
+      });
+      this.toastr.error(message);
+    } else {
+      this.toastr.error(response.message);
+    }
+    return '';
   }
 }

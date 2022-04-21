@@ -75,7 +75,10 @@
               aria-labelledby="panelsStayOpen-headingOne"
             >
               <div class="accordion-body">
-                <table class="table table-bordered table-hover" *ngIf="usuario.AtivosUsuario.length > 0">
+                <table
+                  class="table table-bordered table-hover"
+                  *ngIf="usuario.AtivosUsuario.length > 0"
+                >
                   <thead>
                     <tr>
                       <th scope="col">Ativo</th>
@@ -128,9 +131,9 @@
                     <td class="col-4">{{ ativo.valor | currency: "BRL" }}</td>
                     <td class="col-2 text-center">
                       <button
-                        class="btn btn-primary"
+                        class="btn btn-primary shadow-none"
                         data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
+                        data-bs-target="#modalComprarAtivo"                        
                         (click)="showModal(ativo.id, ativo.codigo, ativo.valor)"
                       >
                         <span class="fa fa-shopping-cart"></span>&nbsp;Comprar
@@ -146,21 +149,22 @@
     </div>
     <div
       class="modal fade"
-      id="exampleModal"
+      id="modalComprarAtivo"
       tabindex="-1"
-      aria-labelledby="exampleModalLabel"
+      aria-labelledby="modalComprarAtivoLabel"
       aria-hidden="true"
-      data-backdrop="false"
+      data-bs-backdrop="false"
     >
-      <div class="modal-dialog">
+      <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Comprar ativo</h5>
+            <h5 class="modal-title" id="modalComprarAtivoLabel">Comprar ativo</h5>
             <button
               type="button"
               class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              #btnCancelar
             ></button>
           </div>
           <div class="modal-body">
@@ -186,7 +190,8 @@
             <button
               type="button"
               class="btn btn-light btn-sm"
-              data-bs-dismiss="modal"
+              data-bs-dismiss="modal"              
+              #btnCancelar
             >
               Cancelar
             </button>
