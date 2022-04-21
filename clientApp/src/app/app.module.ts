@@ -1,4 +1,8 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import ptBr from '@angular/common/locales/pt';
+registerLocaleData(ptBr)
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -23,12 +27,7 @@ const maskConfig: Partial<IConfig> = {
 };
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    HomeComponent,
-    LoadingComponent
-  ],
+  declarations: [AppComponent, LoginComponent, HomeComponent, LoadingComponent],
   imports: [
     BrowserModule,
     NgxMaskModule.forRoot(maskConfig),
@@ -36,13 +35,19 @@ const maskConfig: Partial<IConfig> = {
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
   ],
-  providers: [AtivosService, AuthService, LoginService, {
-    provide: HTTP_INTERCEPTORS,
-    useClass: NetworkInterceptor,
-    multi: true,
-  }],
-  bootstrap: [AppComponent]
+  providers: [
+    AtivosService,
+    AuthService,
+    LoginService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: NetworkInterceptor,
+      multi: true,
+    },
+    { provide: LOCALE_ID, useValue: 'pt-BR' },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

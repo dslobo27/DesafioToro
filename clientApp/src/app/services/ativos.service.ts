@@ -10,7 +10,7 @@ import { ComprarAtivo } from '../models/ComprarAtivo.model';
 })
 export class AtivosService {
   public url: string = 'http://localhost:6846/api';
-
+  
   constructor(private httpClient: HttpClient) {}
 
   obterCincoAtivosMaisVendidos(): Observable<Result> {
