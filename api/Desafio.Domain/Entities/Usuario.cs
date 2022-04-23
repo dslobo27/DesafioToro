@@ -12,6 +12,6 @@ namespace Desafio.Domain.Entities
         public string Senha { get; set; }
 
         public ContaCorrente ContaCorrente { get; set; }
-        public List<AtivoUsuario> AtivosUsuario { get; set; }
+        public ICollection<AtivoUsuario> AtivosUsuario { get; set; }
     }
 }

@@ -10,6 +10,6 @@ namespace Desafio.Domain.Entities
         public decimal Valor { get; set; }
         public int QuantidadeNegociados { get; set; }
 
-        public List<AtivoUsuario> AtivosUsuario { get; set; }
+        public ICollection<AtivoUsuario> AtivosUsuario { get; set; }
     }
 }
