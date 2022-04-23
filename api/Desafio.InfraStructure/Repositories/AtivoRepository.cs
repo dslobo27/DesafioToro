@@ -20,9 +20,9 @@ namespace Desafio.InfraStructure.Repositories
 
         public void AtualizarVendas(Ativo ativo)
         {
-            _context.Update(ativo);
+            _context.Entry(ativo).State = EntityState.Modified;
         }
-
+        
         public async Task<List<Ativo>> ObterCincoAtivosMaisNegociados()
         {
             return await _context.Ativos.AsNoTracking().OrderByDescending(x => x.QuantidadeNegociados).Take(5).ToListAsync();
@@ -30,7 +30,7 @@ namespace Desafio.InfraStructure.Repositories
 
         public async Task<Ativo> ObterPorId(Guid ativoId)
         {
-            return await _context.Ativos.AsNoTracking().SingleOrDefaultAsync(x => x.Id.Equals(ativoId));
+            return await _context.Ativos.Include(x => x.AtivosUsuario).SingleOrDefaultAsync(x => x.Id.Equals(ativoId));
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using Desafio.Domain.Contracts.Repositories;
 using Desafio.Domain.Entities;
 using Desafio.InfraStructure.Context;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
 
 namespace Desafio.InfraStructure.Repositories
 {
@@ -13,9 +16,18 @@ namespace Desafio.InfraStructure.Repositories
             _context = context;
         }
 
-        public void ComprarAtivo(AtivoUsuario ativoUsuario)
+        public void AlterarAtivo(AtivoUsuario ativoUsuario)
         {
-            _context.Update(ativoUsuario);
+            _context.Entry(ativoUsuario).State = EntityState.Modified;
+        }
+
+        public async Task<AtivoUsuario> Obter(Guid ativoId, Guid usuarioId)
+        {
+            return await _context.AtivosUsuario
+                .Include(x => x.Ativo)
+                .Include(x => x.Usuario)
+                .SingleOrDefaultAsync(x => x.AtivoId.Equals(ativoId)
+                    && x.UsuarioId.Equals(usuarioId));
         }
     }
 }

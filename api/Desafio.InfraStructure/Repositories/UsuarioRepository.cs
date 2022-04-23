@@ -3,6 +3,7 @@ using Desafio.Domain.Entities;
 using Desafio.InfraStructure.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Desafio.InfraStructure.Repositories
@@ -16,9 +17,14 @@ namespace Desafio.InfraStructure.Repositories
             _context = context;
         }
 
+        public void AtualizarUsuario(Usuario usuario)
+        {
+            _context.Update(usuario);
+        }
+
         public async Task<Usuario> Login(string cpf, string senha)
         {
-            return await _context.Usuarios.AsNoTracking()
+            return await _context.Usuarios
                 .Include(x => x.ContaCorrente)
                 .Include(x => x.AtivosUsuario)
                     .ThenInclude(x => x.Ativo)
@@ -27,7 +33,7 @@ namespace Desafio.InfraStructure.Repositories
 
         public async Task<Usuario> ObterPorId(Guid usuarioId)
         {
-            return await _context.Usuarios.AsNoTracking()
+            return await _context.Usuarios
                 .Include(x => x.ContaCorrente)
                 .Include(x => x.AtivosUsuario)
                     .ThenInclude(x => x.Ativo)
