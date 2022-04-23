@@ -1,9 +1,13 @@
 ﻿using Desafio.Domain.Entities;
+using System;
+using System.Threading.Tasks;
 
 namespace Desafio.Domain.Contracts.Repositories
 {
     public interface IAtivoUsuarioRepository
     {
-        void ComprarAtivo(AtivoUsuario ativoUsuario);
+        Task<AtivoUsuario> Obter(Guid ativoId, Guid usuarioId);
+
+        void AlterarAtivo(AtivoUsuario ativoUsuario);
     }
 }

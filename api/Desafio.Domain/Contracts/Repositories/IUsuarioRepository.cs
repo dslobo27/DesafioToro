@@ -8,5 +8,6 @@ namespace Desafio.Domain.Contracts.Repositories
     {
         Task<Usuario> ObterPorId(Guid usuarioId);
         Task<Usuario> Login(string cpf, string senha);
+        void AtualizarUsuario(Usuario usuario);
     }
 }
