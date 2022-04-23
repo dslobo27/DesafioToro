@@ -8,8 +8,7 @@ namespace Desafio.InfraStructure.Configurations
     {
         public void Configure(EntityTypeBuilder<AtivoUsuario> builder)
         {
-            builder.HasKey(map => map.Id);
-            builder.Property(map => map.Id);
+            builder.HasKey(map => new { map.AtivoId, map.UsuarioId });
 
             builder.Property(map => map.AtivoId)
                 .IsRequired();
@@ -20,6 +19,14 @@ namespace Desafio.InfraStructure.Configurations
             builder.Property(map => map.Quantidade)
                 .HasDefaultValue(0)
                 .IsRequired();
+
+            builder.HasOne(map => map.Ativo)
+                .WithMany(map => map.AtivosUsuario)
+                .HasForeignKey(map => map.AtivoId);
+
+            builder.HasOne(map => map.Usuario)
+                .WithMany(map => map.AtivosUsuario)
+                .HasForeignKey(map => map.UsuarioId);
         }
     }
 }
