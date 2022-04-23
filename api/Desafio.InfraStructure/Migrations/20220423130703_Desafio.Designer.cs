@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Desafio.InfraStructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220417162935_Desafio")]
+    [Migration("20220423130703_Desafio")]
     partial class Desafio
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,35 +49,35 @@ namespace Desafio.InfraStructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("488cfa78-2506-4f1a-99bb-7fc2c5749225"),
+                            Id = new Guid("b0875733-f461-4bc8-bb63-6c9b2534701c"),
                             Codigo = "PETR4",
                             QuantidadeNegociados = 5,
                             Valor = 28.44m
                         },
                         new
                         {
-                            Id = new Guid("1e2d11b0-a3f6-4e55-a94d-c918abbf0c8b"),
+                            Id = new Guid("e622f460-451c-42f1-b64b-5fd5a3dda041"),
                             Codigo = "MGLU3",
                             QuantidadeNegociados = 4,
                             Valor = 25.91m
                         },
                         new
                         {
-                            Id = new Guid("f039ac06-a8be-4572-9bb2-c9878a14df1c"),
+                            Id = new Guid("76014abf-585a-46f6-b95e-4ff597cd9111"),
                             Codigo = "VVAR3",
                             QuantidadeNegociados = 3,
                             Valor = 25.91m
                         },
                         new
                         {
-                            Id = new Guid("eeeca5a2-5947-4def-8e10-fce4e7e8335b"),
+                            Id = new Guid("6a0064d9-5b8e-4d28-97d5-b3d161e9924a"),
                             Codigo = "SANB11",
                             QuantidadeNegociados = 2,
                             Valor = 40.77m
                         },
                         new
                         {
-                            Id = new Guid("88abab1a-6e03-4f95-b274-7f1aa18fae93"),
+                            Id = new Guid("9f5f5ebb-8916-4846-b180-fe57a6332a16"),
                             Codigo = "TORO4",
                             QuantidadeNegociados = 1,
                             Valor = 115.98m
@@ -86,11 +86,10 @@ namespace Desafio.InfraStructure.Migrations
 
             modelBuilder.Entity("Desafio.Domain.Entities.AtivoUsuario", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("AtivoId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AtivoId")
+                    b.Property<Guid>("UsuarioId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantidade")
@@ -98,12 +97,7 @@ namespace Desafio.InfraStructure.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
-                    b.Property<Guid>("UsuarioId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AtivoId");
+                    b.HasKey("AtivoId", "UsuarioId");
 
                     b.HasIndex("UsuarioId");
 
@@ -166,7 +160,7 @@ namespace Desafio.InfraStructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("19caa746-6d78-4bcd-a2a2-227750bcb236"),
+                            Id = new Guid("76c88a58-b592-42fa-8c02-f24a1f47dc35"),
                             CPF = "17811768097",
                             ContaCorrenteId = new Guid("ca6331b4-52d4-4ee7-9970-7be33fa76628"),
                             Nome = "Cesar Tralli",
