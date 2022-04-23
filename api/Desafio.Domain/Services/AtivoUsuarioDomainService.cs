@@ -2,6 +2,7 @@
 using Desafio.Domain.Contracts.Services;
 using Desafio.Domain.Entities;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Desafio.Domain.Services
@@ -9,10 +10,12 @@ namespace Desafio.Domain.Services
     public class AtivoUsuarioDomainService : IAtivoUsuarioDomainService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAtivoUsuarioRepository _repository;
 
-        public AtivoUsuarioDomainService(IUnitOfWork unitOfWork)
+        public AtivoUsuarioDomainService(IUnitOfWork unitOfWork, IAtivoUsuarioRepository ativoUsuarioRepository)
         {
             _unitOfWork = unitOfWork;
+            _repository = ativoUsuarioRepository;
         }
 
         public async Task ComprarAtivo(AtivoUsuario ativoUsuario)
@@ -30,15 +33,20 @@ namespace Desafio.Domain.Services
                 if (contaCorrente.Saldo < valorOperacao)
                     throw new Exception("Saldo Insuficiente.");
 
-                _unitOfWork.AtivoUsuarioRepository.ComprarAtivo(ativoUsuario);
-
-                ativo.QuantidadeNegociados += ativoUsuario.Quantidade;
-
-                _unitOfWork.AtivoRepository.AtualizarVendas(ativo);
+                var ativoJaExistente = usuario.AtivosUsuario?.SingleOrDefault(x => x.AtivoId.Equals(ativo.Id));
+                if (ativoJaExistente == null)
+                {
+                    ativo.QuantidadeNegociados += ativoUsuario.Quantidade;
+                    usuario.AtivosUsuario.Add(ativoUsuario); 
+                }                    
+                else
+                {
+                    ativoJaExistente.Quantidade += ativoUsuario.Quantidade;
+                    ativoJaExistente.Ativo.QuantidadeNegociados += ativoUsuario.Quantidade;
+                }
 
                 contaCorrente.Saldo -= valorOperacao;
-
-                _unitOfWork.ContaCorrenteRepository.AtualizarSaldo(contaCorrente);
+                _unitOfWork.UsuarioRepository.AtualizarUsuario(usuario);
 
                 await _unitOfWork.Commit();
             }
