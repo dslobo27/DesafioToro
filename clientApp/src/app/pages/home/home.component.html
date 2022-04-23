@@ -95,7 +95,7 @@
                         {{ ativoUsuario.ativoModel.valor | currency: "BRL" }}
                       </td>
                       <td class="col-2">
-                        {{ ativoUsuario.ativoModel.quantidadeNegociados }}
+                        {{ ativoUsuario.quantidade }}
                       </td>
                     </tr>
                   </tbody>
@@ -171,7 +171,7 @@
             <form [formGroup]="form">
               <div class="form-group mb-2">
                 <label for="ativo">Ativo: {{ codigoAtivoSelecionado }}</label> |
-                <label for="valor">Valor: {{ valorAtivoSelecionado }}</label>
+                <label for="valor">Valor: {{ valorAtivoSelecionado | currency: "BRL" }}</label>
               </div>
               <div class="form-group mb-3">
                 <label for="quantidadeNegociados">Quantidade</label>
