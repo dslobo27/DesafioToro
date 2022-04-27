@@ -42,9 +42,9 @@ namespace Desafio.Presentation.Controllers
 
         [HttpPost]
         [Route("order")]
-        public async Task<IActionResult> PostAsync([FromBody]ComprarAtivoModel model)
+        public async Task<IActionResult> PostAsync([FromBody] ComprarAtivoModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(new ResultModel<string>(ModelState.GetErrors()));
 
             try

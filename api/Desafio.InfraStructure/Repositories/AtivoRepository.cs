@@ -22,7 +22,7 @@ namespace Desafio.InfraStructure.Repositories
         {
             _context.Entry(ativo).State = EntityState.Modified;
         }
-        
+
         public async Task<List<Ativo>> ObterCincoAtivosMaisNegociados()
         {
             return await _context.Ativos.AsNoTracking().OrderByDescending(x => x.QuantidadeNegociados).Take(5).ToListAsync();

@@ -2,6 +2,7 @@
 using Desafio.Domain.Contracts.Services;
 using Desafio.Domain.Entities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,12 +11,10 @@ namespace Desafio.Domain.Services
     public class AtivoUsuarioDomainService : IAtivoUsuarioDomainService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IAtivoUsuarioRepository _repository;
 
-        public AtivoUsuarioDomainService(IUnitOfWork unitOfWork, IAtivoUsuarioRepository ativoUsuarioRepository)
+        public AtivoUsuarioDomainService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _repository = ativoUsuarioRepository;
         }
 
         public async Task ComprarAtivo(AtivoUsuario ativoUsuario)
@@ -24,28 +23,31 @@ namespace Desafio.Domain.Services
             {
                 await _unitOfWork.BeginTransaction();
 
+                #region Variáveis
                 var usuario = ativoUsuario.Usuario;
                 var contaCorrente = usuario.ContaCorrente;
                 var ativo = ativoUsuario.Ativo;
+                #endregion
 
-                var valorOperacao = ativo.Valor * ativoUsuario.Quantidade;
+                decimal valorOperacao = ObterValorOperacao(ativoUsuario, ativo);
 
-                if (contaCorrente.Saldo < valorOperacao)
-                    throw new Exception("Saldo Insuficiente.");
+                ValidarSaldo(contaCorrente, valorOperacao);
 
                 var ativoJaExistente = usuario.AtivosUsuario?.SingleOrDefault(x => x.AtivoId.Equals(ativo.Id));
                 if (ativoJaExistente == null)
                 {
                     ativo.QuantidadeNegociados += ativoUsuario.Quantidade;
-                    usuario.AtivosUsuario.Add(ativoUsuario); 
-                }                    
+                    usuario.AtivosUsuario ??= new List<AtivoUsuario>();
+                    usuario.AtivosUsuario.Add(ativoUsuario);
+                }
                 else
                 {
                     ativoJaExistente.Quantidade += ativoUsuario.Quantidade;
                     ativoJaExistente.Ativo.QuantidadeNegociados += ativoUsuario.Quantidade;
                 }
 
-                contaCorrente.Saldo -= valorOperacao;
+                usuario.ContaCorrente.Saldo = DebitarSaldo(contaCorrente, valorOperacao);
+
                 _unitOfWork.UsuarioRepository.AtualizarUsuario(usuario);
 
                 await _unitOfWork.Commit();
@@ -55,6 +57,23 @@ namespace Desafio.Domain.Services
                 await _unitOfWork.RollBack();
                 throw new Exception(ex.Message);
             }
+        }
+
+        private static decimal DebitarSaldo(ContaCorrente contaCorrente, decimal valorOperacao)
+        {
+            contaCorrente.Saldo -= valorOperacao;
+            return contaCorrente.Saldo;
+        }
+
+        private static void ValidarSaldo(ContaCorrente contaCorrente, decimal valorOperacao)
+        {
+            if (contaCorrente.Saldo < valorOperacao)
+                throw new Exception("Saldo Insuficiente.");
+        }
+
+        private static decimal ObterValorOperacao(AtivoUsuario ativoUsuario, Ativo ativo)
+        {
+            return ativo.Valor * ativoUsuario.Quantidade;
         }
     }
 }

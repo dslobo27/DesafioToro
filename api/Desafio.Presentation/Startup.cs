@@ -30,15 +30,16 @@ namespace Desafio.Presentation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            DependencyResolver.Register(services, Configuration);
+            DependencyResolver.Register(services);
 
-            services.AddLogging(loggingBuilder => {
+            services.AddLogging(loggingBuilder =>
+            {
                 loggingBuilder.AddConsole()
                     .AddFilter(DbLoggerCategory.Database.Command.Name, LogLevel.Information);
                 loggingBuilder.AddDebug();
             });
 
-            services.AddDbContext<DataContext>(options => 
+            services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ConnectionString"))
                     .EnableSensitiveDataLogging(true), ServiceLifetime.Transient);
 
@@ -48,10 +49,11 @@ namespace Desafio.Presentation
             {
                 swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "Api para desafio Toro Investimentos", Version = "v1" });
             });
-            
+
             services.AddControllers();
-            services.AddCors(options => {
-                options.AddPolicy("ApiPolicy", 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("ApiPolicy",
                     builder => builder.AllowAnyOrigin().AllowAnyHeader());
             });
 
