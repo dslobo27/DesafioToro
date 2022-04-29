@@ -22,7 +22,7 @@ jobs:
         dotnet-version: 5.0.x
         
     - name: Restore dependencies
-      run: dotnet restore -s
+      run: dotnet restore
       working-directory: api
       
     - name: Build
