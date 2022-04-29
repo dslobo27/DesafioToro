@@ -38,7 +38,7 @@ jobs:
       working-directory: api
             
     - name: Zip Package
-      run: cd ${{ github.workspace }}/out
+      run: cd ${{ github.workspace }}
            zip -r ${{ github.workspace }}/out.zip *
       working-directory: api
       
