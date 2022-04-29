@@ -23,22 +23,27 @@ jobs:
         
     - name: Restore dependencies
       run: dotnet restore -s api
+      working-directory: api/Desafio
       
     - name: Build
-      run: dotnet build --no-restore -s api
+      run: dotnet build --no-restore
+      working-directory: api/Desafio
       
     - name: Test
-      run: dotnet test --no-build --verbosity normal -s api
+      run: dotnet test --no-build --verbosity normal
+      working-directory: api/Desafio
       
     - name: Publish
-      run: dotnet publish -c Release -o '${{ github.workspace }}/api/out'
+      run: dotnet publish -c Release -o '${{ github.workspace }}/out'
+      working-directory: api/Desafio
             
     - name: Zip Package
-      run: cd ${{ github.workspace }}/api/out
-           zip -r ${{ github.workspace }}/api/out.zip *
+      run: cd ${{ github.workspace }}/out
+           zip -r ${{ github.workspace }}/out.zip *
+      working-directory: api/Desafio
       
     - name: Deploy to EB
-      uses: einaregilsson/beanstalk-deploy@v20
+      uses: einaregilsson/beanstalk-deploy@v20      
       with:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -47,5 +52,5 @@ jobs:
         region: us-east-1
         version_label: ${{ github.run_id }}
         version_description: ${{ github.sha }} 
-        deployment_package: ${{ github.workspace }}/api/out.zip  
+        deployment_package: ${{ github.workspace }}/out.zip  
       
