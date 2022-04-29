@@ -29,8 +29,8 @@
                   aria-disabled="true"
                   (click)="logout()"
                 >
-                  <span class="fa fa-user text-white"></span>
-                  <span  id="nome-usuario">Bem vindo, {{ usuario.nome }}</span>
+                  <span class="fa fa-user text-white"></span>&nbsp;
+                  <span  id="nome-usuario">Bem vindo, {{ usuario.nome }}</span>&nbsp;
                   <span class="fa fa-sign-out text-white"></span>
                 </a>
               </li>
@@ -43,7 +43,7 @@
                   tabindex="-1"
                   aria-disabled="true"
                 >
-                  <span class="fa fa-dollar text-white"></span>                  
+                  <span class="fa fa-dollar text-white"></span>&nbsp;                  
                   <span id="saldo-conta-corrente">Saldo disponível: {{ usuario.ContaCorrente.saldo | currency: "BRL" }}</span>
                 </a>
               </li>
