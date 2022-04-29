@@ -34,7 +34,7 @@ jobs:
       working-directory: api      
 
     - name: Publish
-      run: dotnet publish -c Release -o '${{ github.workspace }}/out'
+      run: dotnet publish -c Release -o '${{ github.workspace }}/api/out'
       working-directory: api
             
     - name: Zip Package
