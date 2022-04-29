@@ -30,7 +30,7 @@
                   (click)="logout()"
                 >
                   <span class="fa fa-user text-white"></span>
-                  Bem vindo, {{ usuario.nome }}
+                  <span  id="nome-usuario">Bem vindo, {{ usuario.nome }}</span>
                   <span class="fa fa-sign-out text-white"></span>
                 </a>
               </li>
@@ -43,9 +43,8 @@
                   tabindex="-1"
                   aria-disabled="true"
                 >
-                  <span class="fa fa-dollar text-white"></span>
-                  Saldo disponível:
-                  {{ usuario.ContaCorrente.saldo | currency: "BRL" }}
+                  <span class="fa fa-dollar text-white"></span>                  
+                  <span id="saldo-conta-corrente">Saldo disponível: {{ usuario.ContaCorrente.saldo | currency: "BRL" }}</span>
                 </a>
               </li>
             </ul>
@@ -76,6 +75,7 @@
             >
               <div class="accordion-body">
                 <table
+                  id="tabela-ativos-usuario"
                   class="table table-bordered table-hover"
                   *ngIf="usuario.AtivosUsuario.length > 0"
                 >
@@ -88,13 +88,13 @@
                   </thead>
                   <tbody *ngFor="let ativoUsuario of usuario.AtivosUsuario">
                     <tr class="rowB2">
-                      <td class="col-6">
+                      <td class="col-6 codigo">
                         {{ ativoUsuario.ativoModel.codigo }}
                       </td>
-                      <td class="col-4">
+                      <td class="col-4 valor">
                         {{ ativoUsuario.ativoModel.valor | currency: "BRL" }}
                       </td>
-                      <td class="col-2">
+                      <td class="col-2 quantidade">
                         {{ ativoUsuario.quantidade }}
                       </td>
                     </tr>
@@ -117,7 +117,7 @@
               Top 5 ativos mais vendidos
             </div>
             <div class="card-body">
-              <table class="table table-bordered table-hover">
+              <table class="table table-bordered table-hover" id="tabela-ativos">
                 <thead>
                   <tr>
                     <th scope="col-6">Ativo</th>
@@ -127,11 +127,11 @@
                 </thead>
                 <tbody *ngFor="let ativo of ativos">
                   <tr class="rowB2">
-                    <td class="col-6">{{ ativo.codigo }}</td>
-                    <td class="col-4">{{ ativo.valor | currency: "BRL" }}</td>
+                    <td class="col-6 codigo">{{ ativo.codigo }}</td>
+                    <td class="col-4 valor">{{ ativo.valor | currency: "BRL" }}</td>
                     <td class="col-2 text-center">
                       <button
-                        class="btn btn-primary shadow-none"
+                        class="btn btn-primary btn-comprar-ativo shadow-none"
                         data-bs-toggle="modal"
                         data-bs-target="#modalComprarAtivo"                        
                         (click)="showModal(ativo.id, ativo.codigo, ativo.valor)"
@@ -197,7 +197,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-primary shadow-none"
+              class="btn btn-primary btn-finalizar-compra shadow-none"
               [disabled]="form.invalid"
               (click)="finalizarCompra()"
             >

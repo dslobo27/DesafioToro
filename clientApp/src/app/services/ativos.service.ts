@@ -4,12 +4,13 @@ import { Observable } from 'rxjs';
 import { HeaderCompose } from './header-compose';
 import { Result } from '../models/Result.model';
 import { ComprarAtivo } from '../models/ComprarAtivo.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AtivosService {
-  public url: string = 'http://localhost:6846/api';
+  public url: string = environment.api_url;
   
   constructor(private httpClient: HttpClient) {}
 
