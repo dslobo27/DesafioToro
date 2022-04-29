@@ -31,10 +31,11 @@ jobs:
       
     - name: Test
       run: dotnet test --no-build --verbosity normal
-      working-directory: api
+      working-directory: api      
 
     - name: Publish
       run: dotnet publish -c Release -o '${{ github.workspace }}/out'
+      working-directory: api
             
     - name: Zip Package
       run: cd ${{ github.workspace }}/out
