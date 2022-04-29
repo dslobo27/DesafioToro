@@ -34,9 +34,13 @@ jobs:
       working-directory: api
       
     - name: Publish
-      run: dotnet publish -c Release -o '${{ github.workspace }}'
-      working-directory: api      
+      run: dotnet publish -c Release -o ./api_prd/out
+      working-directory: api  
       
+    - name: Zip Package
+      run: cd ./api_prd/out
+         zip -r ./api_prd/out/out.zip *
+         
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v20      
       with:
@@ -47,4 +51,5 @@ jobs:
         region: us-east-1
         version_label: ${{ github.run_id }}
         version_description: ${{ github.sha }} 
+        deployment_package: ./api_prd/out/out.zip
       
