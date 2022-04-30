@@ -66,6 +66,11 @@ namespace Desafio.InfraStructure.Context
                 {
                     Id = Guid.Parse("ca6331b4-52d4-4ee7-9970-7be33fa76628"),
                     Saldo = 100
+                },
+                new ContaCorrente
+                {
+                    Id = Guid.Parse("fedc3746-1dab-4b15-ab86-91ebec738626"),
+                    Saldo = 10
                 });
 
             modelBuilder.Entity<Usuario>().HasData(
@@ -75,6 +80,14 @@ namespace Desafio.InfraStructure.Context
                     ContaCorrenteId = Guid.Parse("ca6331b4-52d4-4ee7-9970-7be33fa76628"),
                     Nome = "Cesar Tralli",
                     CPF = "17811768097",
+                    Senha = "123"
+                },
+                new Usuario
+                {
+                    Id = Guid.NewGuid(),
+                    ContaCorrenteId = Guid.Parse("fedc3746-1dab-4b15-ab86-91ebec738626"),
+                    Nome = "Edmilson Ávila",
+                    CPF = "99122162020",
                     Senha = "123"
                 });
         }
