@@ -1,40 +1,34 @@
-name: Deploy AWS
+name: Build and deploy Api
 
 on:
-  workflow_dispatch:
-    
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
+    branches:
+      - master
+      
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: 5.0.x
+   build-and-deploy:
+      runs-on: ubuntu-latest
+   
+      steps:
+      - uses: actions/checkout@v3
+		
+		  - name: Setup .NET	
+		    uses: actions/setup-dotnet@v2
+		    with:
+			    dotnet-version: 5.0.x
+         
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
         
-    - name: Restore dependencies
-      run: dotnet restore -s
-      
-    - name: Build
-      run: dotnet build --no-restore -s
-      
-    - name: Test
-      run: dotnet test --no-build --verbosity normal -s
-      
-    - name: Publish
-      run: dotnet publish -c Release -o '${{ github.workspace }}/out'
-            
-    - name: Zip Package
-      run: cd ${{ github.workspace }}/out
+      - name: Test
+		    run: dotnet test --no-build --verbosity normal  
+        
+      - name: dotnet publish
+        run: dotnet publish -c Release -o '${{ github.workspace }}/out' 
+        
+      - name: Zip Package
+        run: |
+           cd ${{ github.workspace }}/out
            zip -r ${{ github.workspace }}/out.zip *
       
     - name: Deploy to EB
@@ -42,10 +36,10 @@ jobs:
       with:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        application_name: desafiotoroapi
-        environment_name: desafiotoroapi-dev
+        application_name: api
+        environment_name: api-dev
         region: us-east-1
         version_label: ${{ github.run_id }}
         version_description: ${{ github.sha }} 
-        deployment_package: ${{ github.workspace }}/out.zip  
-      
+        deployment_package: ${{ github.workspace }}/out.zip    
+         
