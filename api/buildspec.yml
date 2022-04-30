@@ -1,34 +1,51 @@
-# AWS CodeBuild spec to build an Elastic Beanstalk artifact for AWS CodePipeline to deploy
+name: Deploy AWS
 
-version: 0.2
+on:
+  workflow_dispatch:
+    
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
-env:
-    variables:
-        PROJECT: TemplateApiDDD
+jobs:
+  build:
 
-phases:   
-    go_to_directory:
-        commands:
-            - cd api
+    runs-on: ubuntu-latest
 
-    pre_build:
-        commands:
-            - echo Restore started on `date`
-            - dotnet restore
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 5.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore -s
       
-    build:
-        commands:
-            - echo Build started on `date`
-            - dotnet build -c Release
-            - dotnet test -c Release --logger trx --results-directory ./testresults
+    - name: Build
+      run: dotnet build --no-restore -s
       
-    post_build:
-        commands:
-            - echo Publish started on `date`
-            - dotnet publish -c Release  -r linux-x64 -o ./build_output ./${PROJECT}/${PROJECT}.Api.csproj --self-contained false
-
-artifacts:
-    files:
-        - '**/*'
-    base-directory: ./build_output
-    discard-paths: no
+    - name: Test
+      run: dotnet test --no-build --verbosity normal -s
+      
+    - name: Publish
+      run: dotnet publish -c Release -o '${{ github.workspace }}/out'
+            
+    - name: Zip Package
+      run: cd ${{ github.workspace }}/out
+           zip -r ${{ github.workspace }}/out.zip *
+      
+    - name: Deploy to EB
+      uses: einaregilsson/beanstalk-deploy@v20
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: desafiotoroapi
+        environment_name: desafiotoroapi-dev
+        region: us-east-1
+        version_label: ${{ github.run_id }}
+        version_description: ${{ github.sha }} 
+        deployment_package: ${{ github.workspace }}/out.zip  
+      
