@@ -1,33 +1,34 @@
-name: .NET
+# AWS CodeBuild spec to build an Elastic Beanstalk artifact for AWS CodePipeline to deploy
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+version: 0.2
 
-jobs:
-  build:
+env:
+    variables:
+        PROJECT: TemplateApiDDD
 
-    runs-on: ubuntu-latest
+phases:   
+    go_to_directory:
+        commands:
+            - cd api
 
-    steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-    
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: 5.0.x
-      workingdirectory: api
+    pre_build:
+        commands:
+            - echo Restore started on `date`
+            - dotnet restore
       
-    - name: Restore dependencies
-      run: dotnet restore
-      workingdirectory: api
+    build:
+        commands:
+            - echo Build started on `date`
+            - dotnet build -c Release
+            - dotnet test -c Release --logger trx --results-directory ./testresults
       
-    - name: Build
-      run: dotnet build --no-restore
-      workingdirectory: api
-      
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
-      workingdirectory: api
+    post_build:
+        commands:
+            - echo Publish started on `date`
+            - dotnet publish -c Release  -r linux-x64 -o ./build_output ./${PROJECT}/${PROJECT}.Api.csproj --self-contained false
+
+artifacts:
+    files:
+        - '**/*'
+    base-directory: ./build_output
+    discard-paths: no
