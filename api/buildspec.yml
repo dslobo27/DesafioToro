@@ -1,0 +1,58 @@
+name: Build and deploy Api
+
+version: 0.2
+
+on:
+  push:
+    branches:
+      - master
+      
+jobs:
+   build-and-deploy:
+      runs-on: ubuntu-latest
+   
+      steps:
+      - uses: actions/checkout@v3		
+      
+      - name: Setup .NET	
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 5.0.x
+          
+      - name: Install dependencies
+        run: dotnet restore
+        working-directory: ./api
+         
+      - name: Build with dotnet
+        run: dotnet build --configuration Release --no-restore
+        working-directory: ./api
+        
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal  
+        working-directory: ./api
+        
+      - name: dotnet publish
+        run: dotnet publish -c Release --no-self-contained -o ./out 
+        working-directory: ./api
+        
+      - name: Zip Package
+        run: |
+           cd ./out
+           zip -r out.zip *
+        working-directory: ./api
+      
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v20
+        with:
+           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+           application_name: desafio-api
+           environment_name: Desafioapi-env
+           region: us-east-1
+           version_label: ${{ github.run_id }}
+           version_description: ${{ github.sha }} 
+           deployment_package: out.zip    
+         
+artifacts:
+  files:
+    - ./**
