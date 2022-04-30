@@ -53,3 +53,6 @@ jobs:
            version_description: ${{ github.sha }} 
            deployment_package: out.zip    
          
+artifacts:
+  files:
+    - '**/*'
