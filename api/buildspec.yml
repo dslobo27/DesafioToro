@@ -19,25 +19,25 @@ jobs:
           
       - name: Install dependencies
         run: dotnet restore
-        workingdirectory: api
+        working-directory: ./api
          
       - name: Build with dotnet
         run: dotnet build --configuration Release --no-restore
-        workingdirectory: api
+        working-directory: ./api
         
       - name: Test
         run: dotnet test --no-restore --verbosity normal  
-        workingdirectory: api
+        working-directory: ./api
         
       - name: dotnet publish
         run: dotnet publish -c Release -o ./out 
-        workingdirectory: api
+        working-directory: ./api
         
       - name: Zip Package
         run: |
            cd ./out
            zip -r out.zip *
-        workingdirectory: api
+        working-directory: ./api
       
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v20
