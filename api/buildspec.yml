@@ -32,7 +32,7 @@ jobs:
         working-directory: ./api
         
       - name: dotnet publish
-        run: dotnet publish -c Release -o ./out 
+        run: dotnet publish --runtime win-x64 -c Release -o ./out 
         working-directory: ./api
         
       - name: Zip Package
