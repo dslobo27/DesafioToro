@@ -19,20 +19,25 @@ jobs:
           
       - name: Install dependencies
         run: dotnet restore
+        workingdirectory: api
          
       - name: Build with dotnet
         run: dotnet build --configuration Release --no-restore
+        workingdirectory: api
         
       - name: Test
         run: dotnet test --no-restore --verbosity normal  
+        workingdirectory: api
         
       - name: dotnet publish
-        run: dotnet publish -c Release -o '${{ github.workspace }}/out' 
+        run: dotnet publish -c Release -o ./out 
+        workingdirectory: api
         
       - name: Zip Package
         run: |
-           cd ${{ github.workspace }}/out
-           zip -r ${{ github.workspace }}/out.zip *
+           cd ./out
+           zip -r out.zip *
+        workingdirectory: api
       
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v20
@@ -44,5 +49,5 @@ jobs:
         region: us-east-1
         version_label: ${{ github.run_id }}
         version_description: ${{ github.sha }} 
-        deployment_package: ${{ github.workspace }}/out.zip    
+        deployment_package: out.zip    
          
