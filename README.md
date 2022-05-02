@@ -16,20 +16,20 @@ Obs.: Foi acrescentado um fluxo de login, mas o objetivo principal é apresentar
 Foram criados dois usuários de acesso, e os dados são:
 
 - César Tralli
-Cpf: 17811768097
-Senha: 123
-Saldo: R$ 10,00 (Para o teste de saldo insuficiente)
+- Cpf: 17811768097
+- Senha: 123
+- Saldo: R$ 10,00 (Para o teste de saldo insuficiente)
 
 - Edmilson Ávila
-Cpf: 99122162020
-Senha: 123
-Saldo: R$ 300,00
+- Cpf: 99122162020
+- Senha: 123
+- Saldo: R$ 300,00
 
 Foi disponibilizado um banco SQL Server para a aplicação:
-Server: plesk20.nspmanaged.com,1431
-Base: Desafio
-Usuário: usr_toro
-Senha: jjfK9nhYk9jP7sq
+- Server: plesk20.nspmanaged.com,1431
+- Base: Desafio
+- Usuário: usr_toro
+- Senha: jjfK9nhYk9jP7sq
 
 Alguns comandos mais utilizados durante o desenvolvimento:
 - truncate table ativosusuario;
