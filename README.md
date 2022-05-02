@@ -15,12 +15,14 @@ Obs.: Foi acrescentado um fluxo de login, mas o objetivo principal é apresentar
 
 Foram criados dois usuários de acesso, e os dados são:
 
-- César Tralli
+Usuário 1
+- Nome: César Tralli
 - Cpf: 17811768097
 - Senha: 123
 - Saldo: R$ 10,00 (Para o teste de saldo insuficiente)
 
-- Edmilson Ávila
+Usuário 2
+- Nome: Edmilson Ávila
 - Cpf: 99122162020
 - Senha: 123
 - Saldo: R$ 300,00
