@@ -48,12 +48,10 @@ namespace Desafio.Presentation.Controllers
                 return BadRequest(new ResultModel<string>(ModelState.GetErrors()));
 
             try
-            {
-                var validarAtivo = _ativoApplicationService.ValidarAtivo(model.AtivoId);
-                var validarUsuario = _usuarioApplicationService.ValidarUsuario(model.UsuarioId);
-                var comprarAtivo = _ativoApplicationService.ComprarAtivo(model);
-
-                await Task.WhenAll(validarAtivo, validarUsuario, comprarAtivo);
+            { 
+                await _ativoApplicationService.ValidarAtivo(model.AtivoId);
+                await _usuarioApplicationService.ValidarUsuario(model.UsuarioId);
+                await _ativoApplicationService.ComprarAtivo(model);
 
                 return Ok(new ResultModel<string>("Compra de ativo realizada com sucesso!", null));
             }
