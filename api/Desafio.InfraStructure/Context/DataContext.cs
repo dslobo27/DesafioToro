@@ -65,7 +65,7 @@ namespace Desafio.InfraStructure.Context
                 new ContaCorrente
                 {
                     Id = Guid.Parse("ca6331b4-52d4-4ee7-9970-7be33fa76628"),
-                    Saldo = 100
+                    Saldo = 500
                 },
                 new ContaCorrente
                 {
