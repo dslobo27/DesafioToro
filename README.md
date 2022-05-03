@@ -35,7 +35,7 @@ Foi disponibilizado um banco SQL Server para a aplicação:
 
 Alguns comandos mais utilizados durante o desenvolvimento:
 - truncate table ativosusuario;
-- update contascorrentes set saldo = 300;
+- update contascorrentes set saldo = 300 where id = 'FEDC3746-1DAB-4B15-AB86-91EBEC738626';
 - select * from usuarios;
 - select * from Ativos;
 - select * from AtivosUsuario;
